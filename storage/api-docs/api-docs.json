@@ -397,6 +397,75 @@
                 ]
             }
         },
+        "/pedidos-backend/public/api/user": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create a new user",
+                "description": "Create a new user",
+                "operationId": "ee10365648d90eb967aa44f2f107f238",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Return user created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "The name has already been taken."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/pedidos-backend/public/api/login": {
             "post": {
                 "tags": [
@@ -675,6 +744,36 @@
                 },
                 "type": "object"
             },
+            "ImagesByProduct": {
+                "title": "ImagesByProduct",
+                "required": [
+                    "id",
+                    "route",
+                    "product_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "example": "1"
+                    },
+                    "route": {
+                        "type": "string",
+                        "example": "Admin"
+                    },
+                    "product_id": {
+                        "type": "string",
+                        "example": "fas fa-user"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "example": "2024-03-27 01:42:21"
+                    },
+                    "option_menus": {
+                        "$ref": "#/components/schemas/Product"
+                    }
+                },
+                "type": "images_by_products"
+            },
             "OptionMenu": {
                 "title": "OptionMenu",
                 "required": [
@@ -936,7 +1035,7 @@
                     "id",
                     "username",
                     "password",
-                    "worker_id",
+                    "person_id",
                     "typeofUser_id"
                 ],
                 "properties": {
@@ -957,8 +1056,8 @@
                         "format": "date-time",
                         "example": "2023-01-01T00:00:00Z"
                     },
-                    "worker_id": {
-                        "description": "Foreign key referencing Worker",
+                    "person_id": {
+                        "description": "Foreign key referencing person",
                         "type": "number",
                         "example": "1"
                     },
@@ -969,6 +1068,53 @@
                     },
                     "TypeUser": {
                         "$ref": "#/components/schemas/TypeUser"
+                    }
+                },
+                "type": "object"
+            },
+            "UserRequest": {
+                "title": "UserRequest",
+                "description": "User request model",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "example": "Username"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "Password"
+                    },
+                    "names": {
+                        "type": "string",
+                        "example": "names"
+                    },
+                    "motherSurname": {
+                        "type": "string",
+                        "example": "motherSurname"
+                    },
+                    "fatherSurname": {
+                        "type": "string",
+                        "example": "fatherSurname"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "email"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "address"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "phone"
+                    },
+                    "typeofUser_id": {
+                        "type": "integer",
+                        "example": "2"
+                    },
+                    "person_id": {
+                        "type": "integer",
+                        "example": "1"
                     }
                 },
                 "type": "object"

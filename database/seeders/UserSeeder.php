@@ -18,9 +18,9 @@ class UserSeeder extends Seeder
     {
         $users = [
             ['id' => '1', 'username' => 'administrador', 
-            'password' => 'gestionPedidos', 'typeofUser_id' => '1'],
+            'password' => 'gestionPedidos', 'person_id'=>1,'typeofUser_id' => '1'],
             ['id' => '2', 'username' => 'INVITADO', 
-            'password' => '123456', 'typeofUser_id' => '2'],
+            'password' => '123456', 'person_id'=>1,'typeofUser_id' => '2'],
 
         ];
 

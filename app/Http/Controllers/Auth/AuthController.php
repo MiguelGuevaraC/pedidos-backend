@@ -86,15 +86,15 @@ class AuthController extends Controller
             Auth::loginUsingId($user->id);
 
             $token = $user->createToken('auth_token', ['expires' => now()->addHours(2)])->plainTextToken;
-            $user = User::with(['typeUser'])->find($user->id);
+            $user = User::with(['typeofUser'])->find($user->id);
 
-            $tipeUser = $user->typeUser;
+            $tipeUser = $user->typeofUser;
 
             // -------------------------------------------------
             return response()->json([
                 'access_token' => $token,
                 'user' => $user,
-                'optionMenuAccess' => $user->typeUser->getAccess($user->id),
+                'optionMenuAccess' => $user->typeofUser->getAccess($user->id),
                 'permissions' => Optionmenu::pluck('id'),
 
             ]);

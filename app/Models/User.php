@@ -2,27 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+
 /**
  * @OA\Schema (
  * schema="User",
  *     title="User",
  *     type="object",
- *     required={"id", "username", "password", "worker_id", "typeofUser_id"},
+ *     required={"id", "username", "password", "person_id", "typeofUser_id"},
  *     @OA\Property(property="id", type="number", example="1"),
  *     @OA\Property(property="username", type="string", example="johndoe"),
  *     @OA\Property(property="password", type="string", example="password123"),
  *     @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
  *     @OA\Property(
- *         property="worker_id",
+ *         property="person_id",
  *         type="number",
  *         example="1",
- *         description="Foreign key referencing Worker"
+ *         description="Foreign key referencing person"
  *     ),
  *     @OA\Property(
  *         property="typeofUser_id",
@@ -35,6 +35,25 @@ use Laravel\Sanctum\HasApiTokens;
  *         ref="#/components/schemas/TypeUser"
  *     ),
  * )
+ *
+ *   @OA\Schema(
+ *     schema="UserRequest",
+ *     title="UserRequest",
+ *     description="User request model",
+ *     @OA\Property(property="username", type="string", example="Username"),
+ *     @OA\Property(property="password", type="string", example="Password"),
+ * 
+ *      @OA\Property(property="names", type="string", example="names"),
+ *      @OA\Property(property="motherSurname", type="string", example="motherSurname"),
+ *      @OA\Property(property="fatherSurname", type="string", example="fatherSurname"),
+ *      @OA\Property(property="email", type="string", example="email"),
+ *      @OA\Property(property="address", type="string", example="address"),
+ *      @OA\Property(property="phone", type="string", example="phone"),
+
+ *     @OA\Property(property="typeofUser_id", type="integer", example="2"),
+ *     @OA\Property(property="person_id", type="integer", example="1"),
+
+ * )
  */
 class User extends Authenticatable
 {
@@ -42,13 +61,13 @@ class User extends Authenticatable
 
     use SoftDeletes;
 
-
     protected $fillable = [
         'id',
         'username',
-
+        'password',
         'created_at',
         'typeofUser_id',
+        'person_id',
     ];
 
     protected $hidden = [
@@ -57,8 +76,12 @@ class User extends Authenticatable
         'deleted_at',
     ];
 
-    public function typeUser()
+    public function typeofUser()
     {
         return $this->belongsTo(TypeUser::class, 'typeofUser_id');
+    }
+    public function person()
+    {
+        return $this->belongsTo(Person::class, 'person_id');
     }
 }
