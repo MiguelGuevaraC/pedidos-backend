@@ -36,11 +36,16 @@ class Category extends Model
 
     protected $hidden = [
         'updated_at',
-        'deleted_at'
+        'deleted_at',
     ];
 
-//    public function products()
-//    {
-//        return $this->hasMany(Product::class);
-//    }
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ImagesByProduct::class);
+    }
 }

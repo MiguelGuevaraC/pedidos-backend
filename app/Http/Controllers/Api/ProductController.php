@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -16,7 +17,16 @@ class ProductController extends Controller
      *     tags={"Product"},
      *     summary="Get all products",
      *     operationId="index",
-
+     *     @OA\Parameter(
+     *         name="category_id",
+     *         in="query",
+     *         description="ID of the category to filter products",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer",
+     *             example=1
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Return all products",
@@ -38,13 +48,21 @@ class ProductController extends Controller
      *         description="Unauthenticated",
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Unauthenticated")
-     *        )
+     *         )
      *     )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Product::with('category', 'unit','images')->simplePaginate(15));
+        $category_id = $request->input('category_id');
+        $category = Category::find($category_id);
+        if (!$category) {
+            $response = Product::with('category', 'unit', 'images')->simplePaginate(20);
+        } else {
+            $response = Product::with('category', 'unit', 'images')
+                ->where('category_id', $category_id)->simplePaginate(20);
+        }
+        return response()->json($response);
     }
 
     /**
@@ -86,7 +104,7 @@ class ProductController extends Controller
             'name' => [
                 'required',
                 'string',
-                Rule::unique('products')->whereNull('deleted_at')
+                Rule::unique('products')->whereNull('deleted_at'),
             ],
             'purchase_price' => 'required|numeric',
             'description' => 'required|numeric',
@@ -109,15 +127,14 @@ class ProductController extends Controller
             'description' => $request->input('description'),
             'sale_price' => $request->input('sale_price'),
             'stock' => $request->input('stock'),
-            
-            
+
             'category_id' => $request->input('category_id'),
             'unit_id' => $request->input('unit_id'),
-            
+
         ];
 
         $product = Product::create($data);
-        $product = Product::find($product->id)->with('category', 'unit','images')->first();
+        $product = Product::find($product->id)->with('category', 'unit', 'images')->first();
 
         return response()->json($product);
     }
@@ -158,7 +175,7 @@ class ProductController extends Controller
      */
     public function show(int $id)
     {
-        $product = Product::find($id)->with('category', 'unit','images')->first();
+        $product = Product::find($id)->with('category', 'unit', 'images')->first();
 
         if ($product) {
             return response()->json($product);
@@ -224,7 +241,7 @@ class ProductController extends Controller
             'name' => [
                 'required',
                 'string',
-                Rule::unique('products')->ignore($id)->whereNull('deleted_at')
+                Rule::unique('products')->ignore($id)->whereNull('deleted_at'),
             ],
             'purchase_price' => 'required|numeric',
             'description' => 'required|numeric',
@@ -247,15 +264,14 @@ class ProductController extends Controller
             'description' => $request->input('description'),
             'sale_price' => $request->input('sale_price'),
             'stock' => $request->input('stock'),
-            
-            
+
             'category_id' => $request->input('category_id'),
             'unit_id' => $request->input('unit_id'),
-            
+
         ];
 
         $product->update($data);
-        $product = Product::find($id)->with('category', 'unit','images')->first();
+        $product = Product::find($id)->with('category', 'unit', 'images')->first();
 
         return response()->json($product);
 
@@ -315,7 +331,6 @@ class ProductController extends Controller
 //        if ($product->stock > 0) {
 //            return response()->json(['message' => 'Product has stock'], 422);
 //        }
-
 
         $product->delete();
         return response()->json(['message' => 'Product deleted']);

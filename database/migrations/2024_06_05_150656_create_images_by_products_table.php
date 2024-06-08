@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('route');
             $table->timestamps();
             $table->foreignId('product_id')->nullable()->unsigned()->constrained('products');
+            $table->foreignId('category_id')->nullable()->unsigned()->constrained('categories');
             $table->softDeletes();
         });
     }

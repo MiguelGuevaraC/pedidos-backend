@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *     required={"id","route", "product_id"},
  *     @OA\Property(property="id", type="number", example="1"),
  *     @OA\Property(property="route", type="string", example="Admin"),
+ *      @OA\Property(property="category_id", type="string", example="fas fa-user"),
  *     @OA\Property(property="product_id", type="string", example="fas fa-user"),
  *     @OA\Property(property="created_at", type="string", example="2024-03-27 01:42:21"),
  *   @OA\Property(
@@ -27,6 +28,8 @@ class ImagesByProduct extends Model
     protected $fillable = [
         'id',
         'route',
+        'category_id',
+        'product_id',
         'created_at',
     ];
     protected $hidden = [
@@ -37,5 +40,9 @@ class ImagesByProduct extends Model
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
+    }
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }
