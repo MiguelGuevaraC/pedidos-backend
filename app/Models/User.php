@@ -42,7 +42,7 @@ use Laravel\Sanctum\HasApiTokens;
  *     description="User request model",
  *     @OA\Property(property="username", type="string", example="Username"),
  *     @OA\Property(property="password", type="string", example="Password"),
- * 
+ *
  *      @OA\Property(property="names", type="string", example="names"),
  *      @OA\Property(property="motherSurname", type="string", example="motherSurname"),
  *      @OA\Property(property="fatherSurname", type="string", example="fatherSurname"),
@@ -50,8 +50,6 @@ use Laravel\Sanctum\HasApiTokens;
  *      @OA\Property(property="address", type="string", example="address"),
  *      @OA\Property(property="phone", type="string", example="phone"),
 
- *     @OA\Property(property="typeofUser_id", type="integer", example="2"),
- *     @OA\Property(property="person_id", type="integer", example="1"),
 
  * )
  */

@@ -65,6 +65,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductSeeder::class);
       
         $this->call(ImagesByProductsSeeder::class);
+        $this->call(AfqsTableSeeder::class);
 
     }
 }

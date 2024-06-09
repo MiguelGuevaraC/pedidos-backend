@@ -17,7 +17,7 @@ class UserController extends Controller
      *     path="/pedidos-backend/public/api/user",
      *     tags={"User"},
      *     summary="Create a new user",
-     *     security={{"bearerAuth": {}}},
+
      *     @OA\RequestBody(
      *          required=true,
      *          @OA\JsonContent(ref="#/components/schemas/UserRequest")
@@ -44,6 +44,7 @@ class UserController extends Controller
      * )
      */
 
+    //stor para un cliente
     public function store(Request $request)
     {
         $validator = validator()->make($request->all(), [
@@ -54,7 +55,7 @@ class UserController extends Controller
             ],
             'password' => 'required|min:8',
 
-            'typeofUser_id' => 'required|integer|exists:type_users,id',
+            // 'typeofUser_id' => 'required|integer|exists:type_users,id',
             // 'person_id' => 'required|integer|exists:people,id',
 
             'names' => 'required',
@@ -87,7 +88,7 @@ class UserController extends Controller
         $data = [
             'username' => $request->input('username'),
             'password' => $hashedPassword,
-            'typeofUser_id' => $request->input('typeofUser_id'),
+            'typeofUser_id' => 2, //CREAR CLIENTE
             'person_id' => $objectPerson->id,
         ];
 
@@ -97,4 +98,38 @@ class UserController extends Controller
 
         return response()->json($object);
     }
+
+    /**
+     * Create a new user
+     * @OA\Post(
+     *     path="/pedidos-backend/public/api/user",
+     *     tags={"User"},
+     *     summary="Create a new user",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/UserRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Return user created",
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Unprocessable Entity",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="The name has already been taken.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthenticated")
+     *        )
+     *     )
+     * )
+     */
+
 }

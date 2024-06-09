@@ -134,7 +134,7 @@ class ProductController extends Controller
         ];
 
         $product = Product::create($data);
-        $product = Product::find($product->id)->with('category', 'unit', 'images')->first();
+        $product = Product::find($product->id)->with('category', 'unit', 'images');
 
         return response()->json($product);
     }
@@ -271,7 +271,7 @@ class ProductController extends Controller
         ];
 
         $product->update($data);
-        $product = Product::find($id)->with('category', 'unit', 'images')->first();
+        $product = Product::with('category', 'unit', 'images')->find($id);
 
         return response()->json($product);
 

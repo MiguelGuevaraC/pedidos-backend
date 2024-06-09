@@ -16,7 +16,7 @@ class TypeUserSeeder extends Seeder
     {
         $array = [
             ['id' => '1', 'name' => 'Administrador'],
-            ['id' => '2', 'name' => 'UsuarioPrueba'],
+            ['id' => '2', 'name' => 'Cliente'],
             ['id' => '3', 'name' => 'Visitante'],
         ];
 
@@ -28,6 +28,6 @@ class TypeUserSeeder extends Seeder
                 TypeUser::create($object);
             }
         }
-        
+
     }
 }
